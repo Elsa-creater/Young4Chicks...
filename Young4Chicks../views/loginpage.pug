@@ -1,0 +1,34 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Young4ChickS Login
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='style.css')
+.container.d-flex.justify-content-center.align-items-center.min-vh-100
+  .card.shadow.p-4.login-card
+    h2.text-center.mb-4 Login to Young4ChickS
+    form(action='/loginpage' method='POST')
+      .mb-3
+        label.form-label(for='role') Select Role
+        select#role.form-select(name='role' placeholder='select your role' required='')
+          option(value='' disabled='' selected='') Choose your role
+          option(value='sales_agent') Sales Agent
+          option(value='youth_farmer') Youth Farmer
+          option(value='brooder_manager') Brooder Manager
+      .mb-3
+        label.form-label(for='fullname') full name
+        input#fullname.form-control(type='text' name='fullname' placeholder='enter full name' required='') 
+      .mb-3
+        label.form-label(for='username') Username or Email
+        input#username.form-control(type='text' name='username' placeholder='enter username or email' required='')
+      .mb-3
+        label.form-label(for='id number') Identification Number
+        input#idnumber.form-control(type='text' name='idnumber' placeholder='enter ID number' required='')
+      .mb-3
+        label.form-label(for='password') Password
+        input#password.form-control(type='password' name='password' placeholder='enter password here' required='')
+      button.btn.btn-primary.w-100(type='submit') Login
+      p.mt-3.text-center
+        | Don&apos;t have an account? 
+        a(href='/register') Register

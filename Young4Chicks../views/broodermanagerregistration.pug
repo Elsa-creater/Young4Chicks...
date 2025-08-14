@@ -1,0 +1,37 @@
+extends layout 
+block content 
+    header
+        meta(charset="UTF-8")
+        title Brooder Manager Registration 
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/css/style.css")
+        .form-container
+        img.logo(src="/images/young4chicks-logo.png", alt="Young4ChickS Logo")
+        h2.text-center.mb-4 Brooder Manager Registration
+        form(action="/register-brooder-manager", method="POST")
+            .mb-3
+            label.form-label(for="fullName") Full Name
+            input.form-control(type="text" id="fullName" name="fullName" placeholder="Enter full name here" required)
+            .mb-3
+            label.form-label(for="nationalId") National ID Number
+            input.form-control(type="text" id="nationalId" name="nin" placeholder="Enter ID number here" required)
+            .mb-3
+            label.form-label(for="phonenumber") Phone Number
+            input.form-control(type="tel" id="contact" name="phone number" placeholder="Enter phine number here"required)
+            .mb-3
+            label.form-label(for="emailaddress") Email Address
+            input.form-control(type="emailaddress" id="emailaddress" name="emailaddress" placeholder="Enter email address here" required)
+            .mb-3
+            label.form-label(for="experience") Experience with Poultry
+            select.form-select(id="experience", name="experience", required)
+                option(value="") -- Select Experience Level --
+                option(value="None") None
+                option(value="Beginner") Beginner
+                option(value="Intermediate") Intermediate
+                option(value="Advanced") Advanced
+            .mb-3
+            label.form-label(for="password") Create Password
+            input.form-control(type="password", id="password", name="password", required)
+            .mb-3.text-center
+            button.btn.btn-success.w-100(type="submit") Register
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')

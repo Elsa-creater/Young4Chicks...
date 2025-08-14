@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  .container.mt-5
+    h2 View Statistics
+    p Total Stock: #{manager.managedStock}
+    p Approved Requests: #{manager.approvedRequests.length}

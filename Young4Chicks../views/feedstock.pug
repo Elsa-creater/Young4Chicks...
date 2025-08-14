@@ -1,0 +1,37 @@
+extends layout 
+block content 
+    header
+        meta(charset='UTF-8')
+        title Feed Stock
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='Add chick stock form for brooder managers')
+        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet')
+        link(rel="stylesheet", href="css/style.css")
+        .form-container
+        h2.form-title Add Feed Stock 
+        form#addfeedstockform(action="/feedstock" method="POST")
+            .mb-3
+            label.form-label(for='category') Category
+            select#feedcategory.form-select(name='category' required='')
+                option(value='') --Select Category--
+                option(value='Local') Local
+                option(value='Exotic') Exotic   
+            .mb-3
+            label.form-label(for='type') Type
+            select#chicktype.form-select(name='type' required='')
+                option(value='') --Select Type--
+                option(value='Broilers') Broilers
+                option(value='Layers') Layers
+                option(value='Local') Local (Indigenous)
+            .mb-3
+            label.form-label(for='quantity') Quantity (100-500)
+            input#numberofchicks.form-control(type='number' name='quantity' placeholder='number of chicks' required)
+            .mb-3
+            label.form-label(for='ageindays') Age in Days
+            input#ageindays.form-control(type='number' name='ageindays' placeholder='Age in days' required)
+            .mb-3
+            label.form-label(for='stocking date') Stocking Date
+            input#stockingdate.form-control(type='date' name='stockingdate' placeholder='Select stocking date' required)
+            .d-grid
+            button.btn.btn-custom(type='submit') Submit
+        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')

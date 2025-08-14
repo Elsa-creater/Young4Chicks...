@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .container.mt-5
+    h2.text-center.mb-4 ✅ Approve Chick Requests
+
+    if requests.length > 0
+      table.table.table-striped
+        thead
+          tr
+            th Farmer Name
+            th Quantity
+            th Type
+            th Actions
+        tbody
+          each request in requests
+            tr
+              td= request.farmerName
+              td= request.quantity
+              td= request.type
+              td
+                form(action=`/approverequests/${request._id}/approve`, method="POST", style="display:inline;")
+                  button.btn.btn-success.btn-sm(type="submit") Approve
+                form(action=`/approverequests/${request._id}/reject`, method="POST", style="display:inline; margin-left:5px;")
+                  button.btn.btn-danger.btn-sm(type="submit") Reject
+    else
+      p.text-center No pending requests right now.

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container.mt-5
+    h2.text-center.mb-4 👨‍🌾 Sales Agent Dashboard
+    p.text-center Welcome #{agent.fullname}
+    ul
+      li 📋 View assigned farmers
+      li 📞 Contact farmers
+      li ✅ Approve chick requests
+    a.btn.btn-primary.mt-4(href='/assignedfarmers') View Assigned Farmers
+    a.btn.btn-info.mt-4.ms-2(href='/contactfarmers') Contact Farmers
+    a.btn.btn-success.mt-4.ms-2(href='/approverequests') Approve Requests
+    a.btn.btn-danger.mt-4.ms-2(href='/logout') Logout

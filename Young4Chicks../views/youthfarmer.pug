@@ -1,0 +1,34 @@
+extends layout 
+block content 
+    header
+    link(rel='stylesheet' href='style/youthfarmer.css')
+    .container.my-5
+    h2.text-center.mb-4 Youth Farmer Registration Forms
+    .card.mb-4
+        .card-header.bg-primary.text-white
+        h4 Youth Farmer Registration Form
+        .card-body
+        form#youthRegistration(action='/youthfarmer' method='POST')  
+            .mb-3
+            label.form-label Full Name
+            input.form-control(type='text' name='fullname' placeholder='Agent Name' required='')
+            .mb-3
+            label.form-label Phone Number
+            input.form-control(type='tel' name='phonenumber' placeholder='e.g. +256...' required='')
+            .mb-3
+            label.form-label Age Group
+            input.form-control(type='text' name='agegroup' placeholder='e.g. 18-30 ' required='')
+            .mb-3
+            label.form-label(for='email') Email Address
+            input#email.form-control(type='email' name='email' placeholder='Enter your email address' required='')
+            .mb-3
+            label.form-label Location
+            input.form-control(type='text' name='location' placeholder='District or Town' required='')
+            .mb-3
+            label.form-label(for='nameofbusiness') Name of Business
+            input#nameofbusiness.form-control(type='text' name='nameofbusiness' placeholder='e.g. Youth Farmer Co-operative' required='')
+            .mb-3
+            label.form-label National ID Number
+            input.form-control(type='text' name='nin' placeholder='e.g. NIN...' required='')
+            button.btn.btn-primary(type='submit') Register farmer 
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')

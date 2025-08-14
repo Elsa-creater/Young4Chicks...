@@ -1,0 +1,81 @@
+/* General Page Styling */
+body {
+    background: #f9f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  /* Heading */
+  h2 {
+    font-weight: 700;
+    color: #444;
+  }
+  
+  /* Card Styling */
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: none;
+  }
+  
+  .card-header {
+    font-weight: bold;
+    font-size: 1.25rem;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  /* Form Inputs */
+  .form-control {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  }
+  
+  /* Buttons */
+  button.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: 0.3s ease;
+  }
+  
+  button.btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Responsive Form Spacing */
+  form .mb-3 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Thank You Page */
+  body.text-center {
+    background-color: #ffffff;
+  }
+  .form-container {
+    max-width: 600px;
+      margin: 50px auto;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .form-title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #d9905d;
+    font-weight: bold;
+  }
+  .btn-custom {
+    background-color: #d9905d;
+    color: white;
+  }
+  .btn-custom:hover {
+    background-color: #bf7742;
+  }
