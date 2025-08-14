@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const youthfarmer = require("../models/youthfarmerModel");
+const youthfarmer = require("../models/youthfarmerregistrationModel");
 
 app.get('/addyouthfarmer', (req, res) => {
     res.render('📊 Welcome, Farmer!');

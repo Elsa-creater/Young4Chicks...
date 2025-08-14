@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  .container.my-5
+    .card
+      .card-header.bg-success.text-white
+        h3 Registration Successful!
+      .card-body
+        p Thank you #{fullname} for registering as a Youth Farmer.
+        a.btn.btn-primary(href='/youthfarmerregistration') Register another farmer

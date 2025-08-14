@@ -80,7 +80,7 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
-const YouthfarmerModel = require("../models/youthfarmerModel");
+const YouthfarmerModel = require("../models/youthfarmerregistrationModel");
 router.get("/youthfarmer", (req, res) => {
     res.render("youthfarmer");
 });

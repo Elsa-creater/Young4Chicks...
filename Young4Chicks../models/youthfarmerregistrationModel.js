@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const YouthfarmerSchema = new mongoose.Schema({
+const YouthfarmerregistrationSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required: true,
@@ -41,4 +41,4 @@ const YouthfarmerSchema = new mongoose.Schema({
 
 
 
-module.exports = mongoose.model("Youthfarmer", YouthfarmerSchema);
+module.exports = mongoose.model("Youthfarmerregistration", YouthfarmerregistrationSchema);

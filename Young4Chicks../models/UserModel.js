@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required: true,
@@ -34,6 +34,25 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    nin: {
+        type: String,
+        required: true,
+        unique: true, // Ensure NIN is unique
+    },
+    agegroup: {
+        type: Number,
+        required: true,
+        min: 18,
+        max: 30, // Assuming age group is between 18 and 30
+    },
+    nameofbusiness: {
+        type: String,
+        required: true,
+    },
+    location: {
+        type: String,
+        required: true,
+    },
     dateoforder: {
         type: Date,
         default: Date.now, // Automatically set to current date if not provided
@@ -47,86 +66,7 @@ const userSchema = new mongoose.Schema({
         default: "",
     },
 }, { timestamps: true });
-userSchema.plugin(passportLocalMongoose,{
+UserSchema.plugin(passportLocalMongoose,{
   usernameField: 'phonenumber'
 })
-module.exports = mongoose.model("User", userSchema);
-
-const ChickStockSchema = new mongoose.Schema({
-    category: {
-        type: String,
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-    },
-    type: {
-        type: String,
-        required: true,
-    },
-    ageindays: {
-        type: Number,
-        required: true,
-    },
-    stockingdate: {
-        type: Date,
-        required: true,
-    },
-}, { timestamps: true });
-
-const loginpageSchema = new mongoose.Schema({   
-    fullname: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    idnumber: {
-        type: String,
-        required: true,
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true, // Ensure username is unique
-    },
-    role: {
-        type: String,
-        required: true,
-        enum: ["sales_agent", "youth_farmer", "brooder_manager"], // Example roles, adjust as necessary
-    },
-}, { timestamps: true });
-
-const SalesagentSchema = new mongoose.Schema({
-    fullname: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true, // Ensure email is unique
-    },
-    phonenumber: {
-        type: String,
-        required: true,
-    },
-    nin: {       
-        type: String,
-        required: true,
-        unique: true, // Ensure national ID is unique
-    },
-    assignedarea: {
-        type: String,
-        required: true,
-    },
-}, { timestamps: true });
-
-const farmerdashboardSchema = new mongoose.Schema({
-    
-}, { timestamps: true });
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", UserSchema);
