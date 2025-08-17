@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require("path");
 const chickrequestform = require("../models/ChickrequestformModel");
 
-router.get('/addchickrequestform', (req, res) => {
+router.get('/chickrequestform', (req, res) => {
     res.render('chickrequestform');
 });
 
@@ -19,7 +19,7 @@ router.post('/chickrequestform', async (req, res) => {
     }
 
     // Create new chick request with farmer ID
-    const newchickRequest = new ChickRequest({
+    const newchickrequestform = new chickrequestform({
       ...req.body,
       farmer: farmer._id
     });

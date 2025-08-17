@@ -20,8 +20,8 @@ head
         label.form-label(for='fullname') full name
         input#fullname.form-control(type='text' name='fullname' placeholder='enter full name' required='') 
       .mb-3
-        label.form-label(for='username') Username or Email
-        input#username.form-control(type='text' name='username' placeholder='enter username or email' required='')
+        label.form-label(for='email') Email Address
+        input#username.form-control(type='email' name='email' placeholder='enter email' required='')
       .mb-3
         label.form-label(for='id number') Identification Number
         input#idnumber.form-control(type='text' name='idnumber' placeholder='enter ID number' required='')
@@ -30,5 +30,7 @@ head
         input#password.form-control(type='password' name='password' placeholder='enter password here' required='')
       button.btn.btn-primary.w-100(type='submit') Login
       p.mt-3.text-center
-        | Don&apos;t have an account? 
-        a(href='/register') Register
+        | Not registered yet?
+        a(href="/registration") Register here
+      
+        

@@ -2,9 +2,9 @@ extends layout
 block content 
     .container.mt-5 
         h2 Manage Chick Stock 
-        p Current stock :  manager.managedStock
-        form(action='/managestock/${manager._id}', method="POST")
-            .mb3 
+        p Current stock :  #{manager.managedStock}
+        form(action='/managestock/#{manager._id}', method="POST")
+            .mb-3 
                 label.form-label(for="stock") Enter New Stock Amount 
-                input.form-control(type="number, name="stock", min="0", required="")
+                input.form-control(type="number", name="stock", min="0", required="")
             button.btn.btn-primary(type="submit")Update Stock

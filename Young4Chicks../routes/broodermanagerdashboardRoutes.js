@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const BroodermanagerresgistrationModel = require('../models/BroodermanagerregistrationModel');
-const chickrequestform = require("../models/ChickrequestformModel");
+const Chickrequestform = require("../models/ChickrequestformModel");
 
 // Dashboard route
 router.get('/broodermanagerdashboard/:managerId', async (req, res) => {

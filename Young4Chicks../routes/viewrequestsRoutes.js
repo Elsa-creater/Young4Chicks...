@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const youthFarmer = require('../models/youthfarmerregistrationModel');
+const youthFarmer = require('../models/ChickrequestformModel');
 
 router.get('/viewrequests/:farmerId', async (req, res) => {
   try {

@@ -1,54 +1,78 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const youthFarmer = require("../models/youthfarmerregistrationModel");
-const SalesAgent = require("../models/SalesagentModel");
-const loginpage = require("../models/loginpagemodel");
-const BrooderManagerRegistration = require("../models/BroodermanagerregistrationModel");
 
-router.get('/addloginpage', (req, res) => {
+// Import models
+const YouthFarmer = require("../models/YouthfarmerregistrationModel");
+const Salesagent = require("../models/SalesagentregistrationModel");
+const BrooderManager = require("../models/BroodermanagerregistrationModel");
+
+// =====================
+// Render Login Page
+// =====================
+router.get('/loginpage', (req, res) => {
     res.render('loginpage');
 });
 
+router.get("/viewrequests/:id", async (req, res) => {
+  const farmer = await YouthFarmer.findById(req.params.id).populate("chickRequests");
+  res.render("viewRequests", { requests: farmer.chickRequests, fullname: farmer.fullname });
+});
+router.get('/farmerdashboard/:id', async (req, res) => {
+  const farmer = await YouthFarmer.findById(req.params.id);
+  res.render('farmer_dashboard', { fullname: farmer.fullname });
+});
+router.get('/loginpage', (req, res) => {
+  const successMessage = req.query.success ? "Registration successful! Please login." : null;
+  res.render('loginpage', { successMessage });
+});
+// =====================
+// Handle Login Submission
+// =====================
 router.post('/loginpage', async (req, res) => {
   try {
     const { role, username, idnumber, password } = req.body;
     let user;
 
-    // Check role and find user in the correct collection
+    // Find user based on role
     if (role === 'youth_farmer') {
-      user = await Farmer.findOne({ email: username, nin: idnumber });
+      user = await YouthFarmer.findOne({ email: username, nin: idnumber});
     } else if (role === 'sales_agent') {
-      user = await SalesAgent.findOne({ email: username, idnumber: idnumber });
+      user = await Salesagent.findOne({ email: username, nin: idnumber });
     } else if (role === 'brooder_manager') {
-      user = await BrooderManager.findOne({ email: username, idnumber: idnumber });
+      user = await BrooderManager.findOne({ email: username, nin: idnumber });
     } else {
       return res.status(400).send('Invalid role selected.');
     }
 
+    // If user not found
     if (!user) {
       return res.status(400).send('User not found. Please register first.');
     }
 
-    // Check password
-    if (user.password !== password) {
-      return res.status(400).send('Incorrect password.');
-    }
-
+    
     // Redirect to dashboard based on role
     if (role === 'youth_farmer') {
-      return res.redirect(`/viewrequests/${user._id}`); // Farmer dashboard
+      return res.redirect(`/viewrequests/${user._id}`);
     } else if (role === 'sales_agent') {
       return res.redirect(`/salesagentdashboard/${user._id}`);
     } else if (role === 'brooder_manager') {
       return res.redirect(`/broodermanagerdashboard/${user._id}`);
     }
+    if (!user) return res.status(400).send('User not found. Please register first.');
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(400).send('Incorrect password.');
+      // Save user info in session
+    req.session.userId = user._id;
+    req.session.role = role;
+
+    // Redirect to unified dashboard
+    res.redirect('/dashboard')
+    }
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send("Server error: " + err.message);
   }
 });
-
-
-
 
 module.exports = router;
