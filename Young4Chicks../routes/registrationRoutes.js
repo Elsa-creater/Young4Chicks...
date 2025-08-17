@@ -1,47 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const YouthFarmer = require('../models/YouthfarmerregistrationModel');
-const Salesagent = require('../models/SalesagentregistrationModel');
-const Broodermanager = require('../models/BroodermanagerregistrationModel');
-
-
+const User = require('../models/UserModel'); // Unified User model
 
 // GET registration page
 router.get('/registration', (req, res) => {
   res.render('registration');
 });
 
-// POST for Youth Farmer
-router.post('/youthfarmerregistration', async (req, res) => {
+// POST route for all roles
+router.post('/register', async (req, res) => {
   try {
-    const newYouthfarmer = new Youthfarmerregistration(req.body);
-    await newYouthfarmer.save();
+    const { role, email, nin, password, fullname, phonenumber, agegroup, nameofbusiness, location, assignedarea } = req.body;
+
+    const emailClean = email.trim().toLowerCase();
+    const ninClean = nin.trim();
+
+    // Check if email or NIN already exists
+    if (await User.findOne({ email: emailClean })) return res.status(400).send('Email already exists.');
+    if (await User.findOne({ nin: ninClean })) return res.status(400).send('NIN already exists.');
+
+    // Create new user
+    const newUser = new User({
+      role,
+      email: emailClean,
+      nin: ninClean,
+      password,
+      fullname,
+      phonenumber,
+      // Only include these if the role needs them
+      agegroup: role === 'youth_farmer' ? agegroup : undefined,
+      nameofbusiness: role === 'youth_farmer' ? nameofbusiness : undefined,
+      location: role === 'youth_farmer' ? location : undefined,
+      assignedarea: role === 'sales_agent' ? assignedarea : undefined
+    });
+
+    await newUser.save();
     res.redirect('/loginpage');
+
   } catch (err) {
-    res.status(400).send(err.message);
+    console.error(err);
+    res.status(500).send('Error registering user: ' + err.message);
   }
 });
 
-// POST for Sales Agent
-router.post('/salesagentregistration', async (req, res) => {
-  try {
-    const newSalesAgent = new Salesagentregistration(req.body);
-    await newSalesAgent.save();
-    res.redirect('/loginpage');
-  } catch (err) {
-    res.status(400).send(err.message);
-  }
+// AJAX checks for email or NIN availability
+router.post('/check-email', async (req, res) => {
+  const { email } = req.body;
+  const exists = await User.findOne({ email: email.trim().toLowerCase() });
+  res.json({ available: !exists });
 });
 
-// POST for Brooder Manager
-router.post('/broodermanagerregistration', async (req, res) => {
-  try {
-    const newBroodermanager = new Broodermanager(req.body);
-    await newBroodermanager.save();
-    res.redirect('/loginpage');
-  } catch (err) {
-    res.status(400).send(err.message);
-  }
+router.post('/check-nin', async (req, res) => {
+  const { nin } = req.body;
+  const exists = await User.findOne({ nin: nin.trim() });
+  res.json({ available: !exists });
 });
 
 module.exports = router;

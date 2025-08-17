@@ -1,48 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const ChickStock = require('../models/ChickstockModel'); // our model
+const ChickStock = require('../models/ChickstockModel');
 
-// 1️⃣ Route to show current stock page
-router.get('/managestock/:id', async (req, res) => {
+// 1️⃣ GET /managestock - show all stock
+router.get('/managestock', async (req, res) => {
   try {
-    const managerId = req.params.id;
-
-    // Find stock for this manager
-    const stock = await ChickStock.findOne({ _id: managerId });
-
-    res.render('managestock', { manager: stock }); 
-    // 👆 sends data to your pug file
+    const stockItems = await ChickStock.find();
+    res.render('chickStock', { stockItems });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error loading stock page");
   }
 });
 
-// 2️⃣ Route to update stock
-router.post('/managestock/:id', async (req, res) => {
+// 2️⃣ POST /managestock - add or update stock
+router.post('/managestock', async (req, res) => {
+  const { type, quantity } = req.body;
+
   try {
-    const managerId = req.params.id;
-    const { stock } = req.body;
+    let stock = await ChickStock.findOne({ type });
 
-    // Update or create stock record
-    await ChickStock.findByIdAndUpdate(
-      managerId,
-      { quantity: stock },
-      { new: true, upsert: true } // upsert = create if not exists
-    );
+    if (stock) {
+      // Update existing stock
+      stock.quantity = quantity;
+      await stock.save();
+    } else {
+      // Add new stock type
+      await ChickStock.create({ type, quantity });
+    }
 
-    res.redirect(`/managestock/${managerId}`);
+    res.redirect('/managestock');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating stock");
   }
 });
 
-// 3️⃣ Route to list all stock (optional)
+// 3️⃣ Optional: List all stock
 router.get('/allstock', async (req, res) => {
   try {
-    const allStock = await ChickStock.find();
-    res.render('allstock', { stockList: allStock });
+    const stockList = await ChickStock.find();
+    res.render('allstock', { stockList });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching stock");

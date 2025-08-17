@@ -2,7 +2,7 @@ extends layout
 block content
   .container.mt-5
     h2.text-center.mb-4 🌾 Youth Farmer Dashboard
-    p.text-center Welcome to your dashboard. You can:
+    p.text-center Welcome #{farmer.fullname}, to your dashboard. You can:
     ul
       li 🐣 Request chicks
       li 📄 View request status
@@ -20,4 +20,3 @@ block content
       window.location.href = "/loginpage";
     });
   script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')
-  script.

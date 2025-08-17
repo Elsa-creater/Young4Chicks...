@@ -2,75 +2,64 @@ const express = require("express");
 const router = express.Router();
 
 // Import models
-const YouthFarmer = require("../models/YouthfarmerregistrationModel");
-const Salesagent = require("../models/SalesagentregistrationModel");
-const BrooderManager = require("../models/BroodermanagerregistrationModel");
+const {Youthfarmer, Salesagent, Broodermanager}= require("../models/UserModel"); // Assuming a unified User model for all roles
 
-// =====================
+
 // Render Login Page
 // =====================
 router.get('/loginpage', (req, res) => {
     res.render('loginpage');
 });
 
-router.get("/viewrequests/:id", async (req, res) => {
-  const farmer = await YouthFarmer.findById(req.params.id).populate("chickRequests");
-  res.render("viewRequests", { requests: farmer.chickRequests, fullname: farmer.fullname });
-});
-router.get('/farmerdashboard/:id', async (req, res) => {
-  const farmer = await YouthFarmer.findById(req.params.id);
-  res.render('farmer_dashboard', { fullname: farmer.fullname });
-});
-router.get('/loginpage', (req, res) => {
-  const successMessage = req.query.success ? "Registration successful! Please login." : null;
-  res.render('loginpage', { successMessage });
-});
-// =====================
-// Handle Login Submission
-// =====================
+
 router.post('/loginpage', async (req, res) => {
   try {
-    const { role, username, idnumber, password } = req.body;
+    const { role, email, nin, password } = req.body;
+    const emailClean = email.trim().toLowerCase();
+    const ninClean = nin.trim();
+
+    console.log("Login form data:", req.body);
+
     let user;
 
-    // Find user based on role
     if (role === 'youth_farmer') {
-      user = await YouthFarmer.findOne({ email: username, nin: idnumber});
+      user = await Youthfarmer.findOne({ email: emailClean, nin: ninClean });
+      return res.render('youthfarmerdashboard', {
+        agent: user,
+        userId: user._id // Pass the user ID to the dashboard
+      })
     } else if (role === 'sales_agent') {
-      user = await Salesagent.findOne({ email: username, nin: idnumber });
+      user = await Salesagent.findOne({ email: emailClean, nin: ninClean });
+      return res.render('salesdashboard', {
+        agent: user,
+        userId: user._id // Pass the user ID to the dashboard
+      })
     } else if (role === 'brooder_manager') {
-      user = await BrooderManager.findOne({ email: username, nin: idnumber });
+      user = await Broodermanager.findOne({ email: emailClean, nin: ninClean });
+      return res.render('broodermanagerdashboard', {
+        agent: user,
+        userId: user._id // Pass the user ID to the dashboard
+      })
     } else {
-      return res.status(400).send('Invalid role selected.');
+      return res.status(400).send('Invalid role.');
     }
-
-    // If user not found
-    if (!user) {
-      return res.status(400).send('User not found. Please register first.');
-    }
-
     
-    // Redirect to dashboard based on role
-    if (role === 'youth_farmer') {
-      return res.redirect(`/viewrequests/${user._id}`);
-    } else if (role === 'sales_agent') {
-      return res.redirect(`/salesagentdashboard/${user._id}`);
-    } else if (role === 'brooder_manager') {
-      return res.redirect(`/broodermanagerdashboard/${user._id}`);
-    }
-    if (!user) return res.status(400).send('User not found. Please register first.');
-
+    if (!user) return res.status(400).send('User not found');
+    
     const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(400).send('Incorrect password.');
-      // Save user info in session
+    if (!isMatch) return res.status(400).send('Incorrect password');
+    
     req.session.userId = user._id;
     req.session.role = role;
-
-    // Redirect to unified dashboard
-    res.redirect('/dashboard')
+    
+    switch(role) {
+      case 'youth_farmer': return res.redirect(`/viewrequests/${user._id}`);
+      case 'sales_agent': return res.redirect(`/salesagentdashboard/${user._id}`);
+      case 'brooder_manager': return res.redirect(`/broodermanagerdashboard/${user._id}`);
     }
+
   } catch (err) {
+    console.error("Login error:", err);
     res.status(500).send("Server error: " + err.message);
   }
 });

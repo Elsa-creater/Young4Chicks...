@@ -1,10 +1,34 @@
-extends layout 
-block content 
-    .container.mt-5 
-        h2 Manage Chick Stock 
-        p Current stock :  #{manager.managedStock}
-        form(action='/managestock/#{manager._id}', method="POST")
-            .mb-3 
-                label.form-label(for="stock") Enter New Stock Amount 
-                input.form-control(type="number", name="stock", min="0", required="")
-            button.btn.btn-primary(type="submit")Update Stock
+extends layout
+
+block content
+  .container.mt-5
+    h2.text-center.mb-4 🐣 Manage Chick Stock
+
+    // ✅ Display current stock in a table
+    if stockItems.length
+      table.table.table-bordered
+        thead
+          tr
+            th Chick Type
+            th Quantity
+        tbody
+          each item in stockItems
+            tr
+              td #{item.type}
+              td #{item.quantity}
+    else
+      p No stock available yet.
+
+    hr
+
+    // ✅ Form to add new stock or update existing
+    form(action='/managestock', method='POST')
+      .mb-3
+        label.form-label(for='type') Chick Type
+        select.form-control(name='type' required)
+          option(value='Broiler') Broiler
+          option(value='Layer') Layer
+      .mb-3
+        label.form-label(for='quantity') Quantity
+        input.form-control(type='number', name='quantity', min='0', required)
+      button.btn.btn-primary(type='submit') Add / Update Stock

@@ -1,95 +1,97 @@
-//- views/registration.pug
-doctype html
-html
-  head
-    title Young4Chicks Registration
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
-  body
-    .container.mt-5
-      h1.text-center.mb-4 Young4Chicks Registration
+//- registration.pug
+extends layout
 
-      //- Tabs
-      ul.nav.nav-tabs
-        li.nav-item
-          a.nav-link.active(href="#youthfarmer", data-bs-toggle="tab") Youth Farmer
-        li.nav-item
-          a.nav-link(href="#salesagent", data-bs-toggle="tab") Sales Agent
-        li.nav-item
-          a.nav-link(href="#broodermanager", data-bs-toggle="tab") Brooder Manager
+block content
+  h1.text-center.mt-4 Young4ChickS Registration
 
-      //- Tab content
-      .tab-content.mt-3
-        //- Youth Farmer Form
-        .tab-pane.fade.show.active#youthfarmer
-          form(action="/youthfarmerregistration" method="POST")
-            .mb-3
-              label.form-label(for="fullname") Full Name
-              input.form-control(type="text" name="fullname" placeholder='Enter fullname Here' required='')
-            .mb-3
-              label.form-label(for="email") Email Address
-              input.form-control(type="email" name="email" placeholder='Enter email address here' required='')
-            .mb-3
-              label.form-label Phone Number
-              input.form-control(type='tel' name='phonenumber' placeholder='e.g. +256...' required='')
-            .mb-3
-              label.form-label Age Group
-              input.form-control(type='text' name='agegroup' placeholder='e.g. 18-30 ' required='')
-            .mb-3
-              label.form-label National ID Number
-              input.form-control(type='text' name='nin' placeholder='e.g. NIN...' required='')
-            .mb-3
-              label.form-label(for='nameofbusiness') Name of Business
-              input#nameofbusiness.form-control(type='text' name='nameofbusiness' placeholder='e.g. Youth Farmer Co-operative' required='')
-            .mb-3
-              label.form-label Location
-              input.form-control(type='text' name='location' placeholder='District or Town' required='')
-            .mb-3
-              label.form-label(for="password") Create Password
-              input.form-control(type="password", id="password", name="password", required)
-            button.btn.btn-primary(type="submit") Register Youth Farmer
-        //- Sales Agent Form
-        .tab-pane.fade#salesagent
-          form(action="/salesagentregistration" method="POST")
-            .mb-3
-              label.form-label(for="fullname") Full Name
-              input.form-control(type="text" name="fullname" placeholder='sales Agent Name' required='')
-            .mb-3
-              label.form-label(for="phonenumber") Phone Number
-              input.form-control(type="tel" name="phonenumber" placeholder="e.g. +256..." required='')
-            .mb-3
-              label.form-label NIN (National ID Number)
-              input.form-control(type='text' name='nin' placeholder='e.g. NIN...' required='')
-            .mb-3
-              label.form-label(for="email") Email Address
-              input.form-control(type="email" id="email" name="email" placeholder="Enter email address here" required)  
-            .mb-3
-              label.form-label Assigned Area
-              input.form-control(type='text' name='assignedarea' placeholder='Region, District, etc.' required='')
-            .mb-3
-              label.form-label(for="password") Create Password
-              input.form-control(type="password", id="password", name="password", required)
-            button.btn.btn-success(type="submit") Register Sales Agent
-        //- Brooder Manager Form
-        .tab-pane.fade#broodermanager
-          form(action="/broodermanagerregistration" method="POST")
-            .mb-3
-              label.form-label(for="fullname") Full Name
-              input.form-control(type="text" name="fullname" placeholder='Enter full name Here' required='')
-            .mb-3
-              label.form-label(for="nationalId") National ID Number
-              input.form-control(type="text" id="nationalId" name="nin" placeholder="Enter ID number here" required='')
-            .mb-3
-              label.form-label(for="phonenumber") Phone Number
-              input.form-control(type="tel" id="contact" name="phonenumber" placeholder="Enter phone number here" required='')
-            .mb-3
-              label.form-label(for="email") Email Address
-              input.form-control(type="email" id="email" name="email" placeholder="Enter email address here" required)  
-            .mb-3
-              label.form-label(for="password") Create Password
-              input.form-control(type="password", id="password", name="password" required='')
-            button.btn.btn-warning(type="submit") Register Brooder Manager
+   //- Tabs
+   ul.nav.nav-tabs
+    li.nav-item
+      a.nav-link.active(href="#youthfarmer", data-bs-toggle="tab") Youth Farmer
+    li.nav-item
+      a.nav-link(href="#salesagent", data-bs-toggle="tab") Sales Agent
+    li.nav-item
+      a.nav-link(href="#broodermanager", data-bs-toggle="tab") Brooder Manager
 
-    //- Bootstrap JS
+  //- Tab content
+  .tab-content.mt-3
+    //- Youth Farmer Form
+    .tab-pane.fade.show.active#youthfarmer
+      form(action="/register" method="POST")
+        input(type="hidden" name="role" value="youth_farmer")
+        .mb-3
+          label.form-label Full Name
+          input.form-control(type="text" name="fullname" placeholder="Enter full name" required)
+        .mb-3
+          label.form-label Email Address
+          input.form-control(type="email" name="email" placeholder="Enter email" required)
+        .mb-3
+          label.form-label Phone Number
+          input.form-control(type="tel" name="phonenumber" placeholder="+256..." required)
+        .mb-3
+          label.form-label Age Group
+          input.form-control(type="text" name="agegroup" placeholder="18-30" required)
+        .mb-3
+          label.form-label NIN (National ID Number)
+          input.form-control(type="text" name="nin" placeholder="Enter NIN" required)
+        .mb-3
+          label.form-label Name of Business
+          input.form-control(type="text" name="nameofbusiness" placeholder="Business name" required)
+        .mb-3
+          label.form-label Location
+          input.form-control(type="text" name="location" placeholder="District/Town" required)
+        .mb-3
+          label.form-label Password
+          input.form-control(type="password" name="password" required)
+        button.btn.btn-primary(type="submit") Register Youth Farmer
+
+    //- Sales Agent Form
+    .tab-pane.fade#salesagent
+      form(action="/register" method="POST")
+        input(type="hidden" name="role" value="sales_agent")
+        .mb-3
+          label.form-label Full Name
+          input.form-control(type="text" name="fullname" placeholder="Sales Agent Name" required)
+        .mb-3
+          label.form-label Phone Number
+          input.form-control(type="tel" name="phonenumber" placeholder="+256..." required)
+        .mb-3
+          label.form-label NIN
+          input.form-control(type="text" name="nin" placeholder="Enter NIN" required)
+        .mb-3
+          label.form-label Email
+          input.form-control(type="email" name="email" placeholder="Enter email" required)
+        .mb-3
+          label.form-label Assigned Area
+          input.form-control(type="text" name="assignedarea" placeholder="Region/District" required)
+        .mb-3
+          label.form-label Password
+          input.form-control(type="password" name="password" required)
+        button.btn.btn-success(type="submit") Register Sales Agent
+
+    //- Brooder Manager Form
+    .tab-pane.fade#broodermanager
+      form(action="/register" method="POST")
+        input(type="hidden" name="role" value="brooder_manager")
+        .mb-3
+          label.form-label Full Name
+          input.form-control(type="text" name="fullname" placeholder="Enter full name" required)
+        .mb-3
+          label.form-label NIN (National ID Number)
+          input.form-control(type="text" name="nin" placeholder="Enter NIN" required)
+        .mb-3
+          label.form-label Phone Number
+          input.form-control(type="tel" name="phonenumber" placeholder="Enter phone number" required)
+        .mb-3
+          label.form-label Email
+          input.form-control(type="email" name="email" placeholder="Enter email" required)
+        .mb-3
+          label.form-label Password
+          input.form-control(type="password" name="password" required)
+        button.btn.btn-warning(type="submit") Register Brooder Manager
+
+         hr
+         a(href="/loginpage") Go to Login Page
+
+        //- Bootstrap JS
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
