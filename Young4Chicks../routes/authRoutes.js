@@ -19,7 +19,7 @@ router.post("/youthfarmer", async (req,res) => {
                 if (err) {
                     throw err;
                 }
-                res.redirect("/login");
+                res.redirect("/loginpage");
             });
         }
     } catch (error) {
@@ -42,7 +42,7 @@ router.post("/salesagent", async (req,res) => {
                 if (err) {
                     throw err;
                 }
-                res.redirect("/login");
+                res.redirect("/loginpage");
             });
         }
     } catch (error) {
@@ -51,10 +51,10 @@ router.post("/salesagent", async (req,res) => {
 });
 
 // Login route
-router.get("/login", (req,res) => {
-    res.render("login");
+router.get("/loginpage", (req,res) => {
+    res.render("loginpage");
 })
-router.post("/login", passport.authenticate("local", {failureRedirect:"/login"}), (req, res) => {
+router.post("/loginpage", passport.authenticate("local", {failureRedirect:"/login"}), (req, res) => {
     req.session.user = req.user;
     if (req.user.role == "youthfarmer"){
         res.send(" This is youth farmer dashboard");
@@ -62,10 +62,10 @@ router.post("/login", passport.authenticate("local", {failureRedirect:"/login"})
         res.send("This is the youth farmer dashboard");
   }
 });
-router.get("/login", (req,res) => {
-    res.render("login");
+router.get("/loginpage", (req,res) => {
+    res.render("loginpage");
 })
-router.post("/login", passport.authenticate("local", {failureRedirect:"/login"}), (req, res) => {
+router.post("/loginpage", passport.authenticate("local", {failureRedirect:"/login"}), (req, res) => {
     req.session.user = req.user;
     if (req.user.role == "salesagent"){
         res.send("This is sales agent dashboard");    
@@ -90,7 +90,7 @@ router.get("/broodermanagerregistration", (req, res) => {
 // Logout route
 router.get("/logout", (req, res) => {
     // Logic to handle logout
-    res.redirect("/login");
+    res.redirect("/loginpage");
 });
 router.get("/addloginpage", (req, res) => {
     res.render("loginpage");

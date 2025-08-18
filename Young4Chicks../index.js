@@ -5,10 +5,10 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const connectEnsureLogin = require('connect-ensure-login');
 require("dotenv").config();
+const session = require("express-session");
 
 // Use absolute paths for your models
-const User = require('./models/UserModel');
-const Chickrequestform = require('./models/ChickrequestformModel');
+
 
 // Import routes using absolute paths
 const studyRoutes = require('./routes/studyRoutes');
@@ -19,6 +19,12 @@ const authRoutes = require('./routes/authRoutes')
 const broodermanagerdashboardRoutes = require('./routes/broodermanagerdashboardRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes'); // Importing farmer dashboard routes
 const registrationRoutes = require('./routes/registrationRoutes'); // Importing registration routes
+const {Youthfarmer, Salesagent, Broodermanager} = require('./models/UserModel');
+const Chickrequestform = require('./models/ChickrequestformModel');
+const approverequestsRoutes = require('./routes/approverequestsRoutes');
+const viewreportRoutes = require('./routes/viewreportRoutes');
+
+
 // Express app setup
 const app = express();
 const port = process.env.PORT || 3000;
@@ -35,7 +41,11 @@ const expressSession = require("express-session")({
   saveUninitialized: true,
   cookie: { secure: false }
 });
-app.use(expressSession);
+app.use(session({
+  secret: 'yourSecretKey', 
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,6 +61,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.get("/", (req,res) => res.send("Young4Chicks Server is running successfully!"));
+
 app.get("/assignedfarmers/:id", async (req, res) => {
   const userId = req.params.id;
   // TODO: Fetch assigned farmers from DB
@@ -82,10 +93,26 @@ app.get("/managestock/:id", (req, res) => {
 });
 
 // Approve or reject requests
-app.get("/approverequest/:id", (req, res) => {
-  const userId = req.params.id;
-  // Later: fetch pending requests from DB
-  res.send(`Approve or Reject Requests for Brooder Manager ${userId}`);
+// GET: Brooder Manager approves/rejects requests
+app.get('/approverequests/:managerId', async (req, res) => {
+  try {
+    // Fetch all pending chick requests
+    const requests = await Chickrequestform.find({ status: 'Pending' })
+      .populate('farmerId', 'fullname'); // populate farmer name
+
+    // Transform to include farmerName in each request
+    const requestsWithNames = requests.map(r => ({
+      _id: r._id,
+      farmerName: r.farmerId.fullname,
+      quantity: r.quantity,
+      type: r.chicktype, // adjust to match your schema
+    }));
+
+    res.render('approveRequests', { requests: requestsWithNames });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error loading requests');
+  }
 });
 
 // GET: Brooder Manager views all requests
@@ -101,18 +128,14 @@ app.get('/viewstats', async (req, res) => {
   }
 });
 
-app.get('/youthfarmer/:id/dashboard', async (req, res) => {
-  const userId = req.params.id;
-  res.render('youthFarmerDashboard', { userId });
-});
-app.get('/viewrequest/:farmerId', async (req, res) => {
+app.get('/viewrequests/:farmerId', async (req, res) => {
   try {
     const farmerId = req.params.farmerId;
 
     // Fetch all requests made by this farmer
     const requests = await Chickrequestform.find({ farmerId });
 
-    res.render('viewRequest', { requests });
+    res.render('viewrequest', { requests, userId: farmerId });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching requests");
@@ -130,6 +153,8 @@ app.use("/", broodermanagerdashboardRoutes);
 app.use("/", studyRoutes);
 app.use("/", dashboardRoutes); // Use farmer dashboard routes
 app.use("/", registrationRoutes); // Use registration routes
+app.use("/", approverequestsRoutes);
+app.use("/", viewreportRoutes);
 
 
 // 404

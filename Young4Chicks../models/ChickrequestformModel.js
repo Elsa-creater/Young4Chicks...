@@ -21,7 +21,7 @@ chickrequestformSchema = new mongoose.Schema({
     chicktype: {
             type: String,
             required: true,
-            enum: ['layer', 'broiler', 'exotic'] // Example of chick types
+            enum: ['layer', 'broiler',] // Example of chick types
     },
     typeoffarmer: {
             type: String,

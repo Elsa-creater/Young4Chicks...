@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const Youthfarmerregistration = require('../models/Youthfarmerregistration');
-const Salesagentregistration = require('../models/Salesagentregistration');
-const Broodermanagerregistration = require('../models/Broodermanagerregistration');
+const {Youthfarmer, Salesagent, Broodermanager} = require("../models/UserModel");
 
 router.get('/registration', (req, res) => {
   res.render('registration'); // Renders registration.pug
@@ -24,8 +22,8 @@ router.post('/youthfarmerregistration', async (req, res) => {
 // ------------------------
 router.post('/salesagentregistration', async (req, res) => {
   try {
-    const newSalesAgent = new Salesagentregistration(req.body);
-    await newSalesAgent.save();
+    const newSalesagent = new Salesagent(req.body);
+    await newSalesagent.save();
     res.redirect('/loginpage');
   } catch (err) {
     res.status(400).send(err.message);
@@ -37,8 +35,8 @@ router.post('/salesagentregistration', async (req, res) => {
 // ------------------------
 router.post('/broodermanagerregistration', async (req, res) => {
   try {
-    const newBrooderManager = new Broodermanagerregistration(req.body);
-    await newBrooderManager.save();
+    const newBroodermanager = new Broodermanager(req.body);
+    await newBroodermanager.save();
     res.redirect('/loginpage');
   } catch (err) {
     res.status(400).send(err.message);

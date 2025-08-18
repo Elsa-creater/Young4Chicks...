@@ -9,14 +9,10 @@ const loginpageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    idnumber: {
+    email: {
         type: String,
         required: true,
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true, // Ensure username is unique
+        unique: true, // Ensure email is unique
     },
     role: {
         type: String,

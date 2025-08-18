@@ -26,5 +26,5 @@ block content
               td #{request.additionalnotes || 'N/A'}
     else
       p.text-center You have no chick requests yet.
-    a.btn.btn-primary.mt-4(href='/chickrequestform') Request More Chicks
+    a.btn.btn-primary.mt-4(href='/chickrequestform/#{userId}') Request More Chicks
     a.btn.btn-danger.mt-4.ms-2(href='/logout') Logout

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 // ============================
 // Youth Farmer Schema
 // ============================
-const YouthFarmerSchema = new mongoose.Schema({
+const YouthfarmerSchema = new mongoose.Schema({
   fullname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phonenumber: { type: String, required: true },
@@ -16,23 +16,23 @@ const YouthFarmerSchema = new mongoose.Schema({
   chickRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "ChickRequestform" }],
 }, { timestamps: true });
 
-YouthFarmerSchema.pre('save', async function(next) {
+YouthfarmerSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-YouthFarmerSchema.methods.matchPassword = async function(enteredPassword) {
+YouthfarmerSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const YouthFarmer = mongoose.model("YouthFarmer", YouthFarmerSchema);
+const Youthfarmer = mongoose.model("Youthfarmer", YouthfarmerSchema);
 
 // ============================
 // Sales Agent Schema
 // ============================
-const SalesAgentSchema = new mongoose.Schema({
+const SalesagentSchema = new mongoose.Schema({
   fullname: { type: String, required: true },
   phonenumber: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -41,23 +41,23 @@ const SalesAgentSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 6 },
 }, { timestamps: true });
 
-SalesAgentSchema.pre('save', async function(next) {
+SalesagentSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-SalesAgentSchema.methods.matchPassword = async function(enteredPassword) {
+SalesagentSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const SalesAgent = mongoose.model("SalesAgent", SalesAgentSchema);
+const Salesagent = mongoose.model("Salesagent", SalesagentSchema);
 
 // ============================
 // Brooder Manager Schema
 // ============================
-const BrooderManagerSchema = new mongoose.Schema({
+const BroodermanagerSchema = new mongoose.Schema({
   fullname: { type: String, required: true },
   nin: { type: String, required: true, unique: true },
   phonenumber: { type: String, required: true },
@@ -65,7 +65,7 @@ const BrooderManagerSchema = new mongoose.Schema({
   password: { type: String, required: true },
 }, { timestamps: true });
 
-BrooderManagerSchema.pre('save', async function(next) {
+BroodermanagerSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   try {
     const salt = await bcrypt.genSalt(10);
@@ -76,17 +76,17 @@ BrooderManagerSchema.pre('save', async function(next) {
   }
 });
 
-BrooderManagerSchema.methods.matchPassword = async function(enteredPassword) {
+BroodermanagerSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const BrooderManager = mongoose.model("BrooderManager", BrooderManagerSchema);
+const Broodermanager = mongoose.model("Broodermanager", BroodermanagerSchema);
 
 // ============================
 // Export all models
 // ============================
 module.exports = {
-  YouthFarmer,
-  SalesAgent,
-  BrooderManager
+  Youthfarmer,
+  Salesagent,
+  Broodermanager
 };

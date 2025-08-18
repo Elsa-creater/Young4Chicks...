@@ -1,49 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const ChickStock = require('../models/ChickstockModel');
+const chickstock = require('../models/ChickstockModel');
 
-// 1️⃣ GET /managestock - show all stock
-router.get('/managestock', async (req, res) => {
+// GET: Show Manage Stock page for any logged-in Brooder Manager
+router.get('/managestock/:managerId', async (req, res) => {
   try {
-    const stockItems = await ChickStock.find();
-    res.render('chickStock', { stockItems });
+    const stockItems = await chickstock.find(); // fetch all stock
+    res.render('chickStock', { stockItems, managerId: req.params.managerId });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error loading stock page");
   }
 });
 
-// 2️⃣ POST /managestock - add or update stock
-router.post('/managestock', async (req, res) => {
+// POST: Add or increment stock
+router.post('/managestock/:managerId', async (req, res) => {
   const { type, quantity } = req.body;
+  const qtyToAdd = parseInt(quantity);
 
   try {
-    let stock = await ChickStock.findOne({ type });
+    let stock = await chickstock.findOne({ type });
 
     if (stock) {
-      // Update existing stock
-      stock.quantity = quantity;
+      stock.quantity += qtyToAdd;  // increment existing stock
       await stock.save();
     } else {
-      // Add new stock type
-      await ChickStock.create({ type, quantity });
+      await ChickStock.create({ type, quantity: qtyToAdd }); // add new type
     }
 
-    res.redirect('/managestock');
+    res.redirect(`/managestock/${req.params.managerId}`);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating stock");
-  }
-});
-
-// 3️⃣ Optional: List all stock
-router.get('/allstock', async (req, res) => {
-  try {
-    const stockList = await ChickStock.find();
-    res.render('allstock', { stockList });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error fetching stock");
   }
 });
 

@@ -10,18 +10,18 @@ block content
         li 📄 View request status
         li 📞 Contact your sales agent
       a.btn.btn-primary.mt-4(href=`/chickrequestform/${user._id}`) Chick Request Form
-      a.btn.btn-secondary.mt-4(href=`/viewrequests/${user._id}`) View My Requests
+      a.btn.btn-secondary.mt-4(href=`/viewrequest/${user._id}`) View My Requests
 
     else if role === 'sales_agent'
       h2.text-center.mb-4 👨‍🌾 Sales Agent Dashboard
       p.text-center Welcome #{user.fullname}!
       ul
         li 📋 View assigned farmers
-        li 📞 Contact farmers
-        li ✅ Approve chick requests
-      a.btn.btn-primary.mt-4(href='/assignedfarmers') View Assigned Farmers
-      a.btn.btn-info.mt-4.ms-2(href='/contactfarmers') Contact Farmers
-      a.btn.btn-success.mt-4.ms-2(href='/approverequests') Approve Requests
+        li 📄 view request updates 
+        li 📋 Record chick requests
+      a.btn.btn-primary.mt-4(href=`/assignedfarmers/${user._id}`) View Assigned Farmers
+      a.btn.btn-info.mt-4.ms-2(href='/viewrequestupdates') view request updates 
+      a.btn.btn-success.mt-4.ms-2(href='/recordchickrequests') Record chick requests
 
     else if role === 'brooder_manager'
       h2.text-center.mb-4 🐣 Brooder Manager Dashboard
@@ -30,8 +30,9 @@ block content
         li 📦 Manage chick stock
         li ✅ Approve or reject requests
         li 📊 View request statistics
-      a.btn.btn-primary.mt-4(href=`/managestock/${user._id}`) Manage Stock
-      a.btn.btn-success.mt-4.ms-2(href=`/approverequests/${user._id}`) Approve Requests
-      a.btn.btn-info.mt-4.ms-2(href=`/viewstats/${user._id}`) View Statistics
-
+        
+        d-flex.flex-column.align-items-center
+    a.btn.btn-primary.mt-4(href=`/managestock/${user._id}`) Manage Stock
+    a.btn.btn-success.mt-4.ms-2(href=`/approverequests/${user._id}`) Approve Requests
+    a.btn.btn-info.mt-4.ms-2(href=`/viewreport/${user._id}`) View Report
     a.btn.btn-danger.mt-4.ms-2(href='/logout') Logout

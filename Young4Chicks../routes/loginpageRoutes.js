@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-// Import models
-const {Youthfarmer, Salesagent, Broodermanager}= require("../models/UserModel"); // Assuming a unified User model for all roles
+const {Youthfarmer, Salesagent, Broodermanager} = require("../models/UserModel"); // Assuming a unified User model for all roles
 
 
 // Render Login Page
@@ -11,35 +9,22 @@ router.get('/loginpage', (req, res) => {
     res.render('loginpage');
 });
 
-
+// handle login post
 router.post('/loginpage', async (req, res) => {
   try {
-    const { role, email, nin, password } = req.body;
+    const { role, email, password } = req.body;
     const emailClean = email.trim().toLowerCase();
-    const ninClean = nin.trim();
 
     console.log("Login form data:", req.body);
-
+// fetch user from the databse
     let user;
 
     if (role === 'youth_farmer') {
-      user = await Youthfarmer.findOne({ email: emailClean, nin: ninClean });
-      return res.render('youthfarmerdashboard', {
-        agent: user,
-        userId: user._id // Pass the user ID to the dashboard
-      })
+      user = await Youthfarmer.findOne({ email: emailClean });
     } else if (role === 'sales_agent') {
-      user = await Salesagent.findOne({ email: emailClean, nin: ninClean });
-      return res.render('salesdashboard', {
-        agent: user,
-        userId: user._id // Pass the user ID to the dashboard
-      })
+      user = await Salesagent.findOne({ email: emailClean });
     } else if (role === 'brooder_manager') {
-      user = await Broodermanager.findOne({ email: emailClean, nin: ninClean });
-      return res.render('broodermanagerdashboard', {
-        agent: user,
-        userId: user._id // Pass the user ID to the dashboard
-      })
+      user = await Broodermanager.findOne({ email: emailClean});
     } else {
       return res.status(400).send('Invalid role.');
     }
@@ -52,11 +37,10 @@ router.post('/loginpage', async (req, res) => {
     req.session.userId = user._id;
     req.session.role = role;
     
-    switch(role) {
-      case 'youth_farmer': return res.redirect(`/viewrequests/${user._id}`);
-      case 'sales_agent': return res.redirect(`/salesagentdashboard/${user._id}`);
-      case 'brooder_manager': return res.redirect(`/broodermanagerdashboard/${user._id}`);
-    }
+    // Redirect to dashboard
+    if (role === 'youth_farmer') return res.redirect(`/youthfarmer/${user._id}/dashboard`);
+    if (role === 'sales_agent') return res.redirect(`/salesagent/${user._id}/dashboard`);
+    if (role === 'brooder_manager') return res.redirect(`/broodermanager/${user._id}/dashboard`);
 
   } catch (err) {
     console.error("Login error:", err);
