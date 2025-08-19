@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  .container.mt-5
+    .text-center.mb-5
+      h1.display-4.text-success About Young4ChickS
+      p.lead.text-muted
+        | Helping youth (18–30) in urban areas create wealth through poultry farming.
+
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow-lg.p-4.mb-4
+          h3.text-primary Our Story
+          p
+            | Young4ChickS was founded by a Youth Member of Parliament to support young urban 
+            | dwellers in creating sustainable income. The project makes poultry farming accessible 
+            | by providing chicks and affordable feeds.
+
+        .card.shadow-lg.p-4.mb-4
+          h3.text-primary Our Mission
+          p
+            | To stimulate youth involvement in the money economy by promoting poultry 
+            | farming as a source of livelihood and entrepreneurship.
+
+        .card.shadow-lg.p-4.mb-4
+          h3.text-primary Our Business
+          ul
+            li Provide chicks (layers and broilers, both local and exotic).
+            li Fixed price: UGX 1,650 per chick.
+            li Each new farmer: 100 chicks only.
+            li Returning farmers: up to 500 chicks.
+            li Every farmer is eligible for 2 bags of feeds, payable after 2 months.
+
+block footer
+  footer.bg-dark.text-white.text-center.p-4.mt-5
+    p.mb-2 Want to join Young4ChickS?
+    a.btn.btn-primary.me-2(href="/register") Register
+    a.btn.btn-success(href="/login") Login

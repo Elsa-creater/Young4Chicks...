@@ -2,13 +2,13 @@ extends layout
 
 block content
   .container.mt-5
-    h2.text-center.mb-4 📊 Chick Request Statistics
+    h2.text-center.mb-4 📊 Chick Requests
 
-    if requests.length
+    if requests.length > 0
       table.table.table-striped
         thead
           tr
-            th # 
+            th #
             th Farmer Name
             th Chick Type
             th Quantity

@@ -2,53 +2,43 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const chickrequestform = require("../models/ChickrequestformModel");
-const youthFarmer = require("../models/UserModel");
+const {Youthfarmer} = require("../models/UserModel");
 
-router.get('/chickrequestform', (req, res) => {
+router.get('/chickrequestform', protectRoute, (req, res) => {
     res.render('chickrequestform');
 });
 
 
 // Handle chick request form submission
-router.post('/chickrequestform', async (req, res) => {
+router.post('/chickrequestform', protectRoute, async (req, res) => {
   try {
-    // Find farmer based on email (or you can use NIN)
-    const farmer = await youthFarmer.findOne({ email: req.body.email });
+    const { chicktype, quantity, deliveryDate } = req.body;
+    const userId = req.body.userId; // Assuming userId is passed in the request body
+    if (!user) return res.status(400).send('User ID is required');
 
-    if (!farmer) {
-      return res.status(404).send('Farmer not found. Please register first.');
-    }
+    // Find the youth farmer
+    const user = await Youthfarmer.findById(userId);
+    if (!user) return res.status(404).send('User not found');
 
-    // Create new chick request with farmer ID
-    const newchickrequestform = new chickrequestform({
-      ...req.body,
-      farmer: farmer._id
+    // Correctly declare the new request
+    const newRequest = new chickrequestform({
+      farmerId: user._id,
+      chicktype,
+      quantity,
+      preferreddeliverydate: deliveryDate,
+      status: 'Pending'
     });
 
-    // Save the request
-    const savedRequest = await newRequest.save();
+    await newRequest.save();
 
-    // Add request ID to farmer's chickRequests array
-    farmer.chickRequests.push(savedRequest._id);
-    await farmer.save();
-
-    res.send('Chick request submitted successfully and linked to your profile!');
+    res.send('Chick request submitted successfully!');
   } catch (err) {
-    res.status(400).send(err.message);
+    console.error(err);
+    res.status(500).send('Server error');
   }
 });
 
-// View requests page
-router.get('/approverequests', async (req, res) => {
-    try {
-      const requests = await chickrequestform.find({ status: 'Pending' });
-      res.render('approveRequests', { requests });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error loading the requests');
-    }
-  });
-  
+ 
 
 // Approve Requests page
 router.get('/approverequests/:managerId', async (req, res) => {
@@ -84,27 +74,13 @@ router.post('/approverequests/:requestId/reject', async (req, res) => {
   }
 });
 
-
-// router.post("/chickrequestform", async(req, res) => {
-//     try{
-//         console.log( req.body); 
-//         const newchickrequestform = new chickrequestform(req.body);
-//         await newchickrequestform.save();
-//     }catch(error){
-//             console.error("Error saving chick request:", error);
-//             res.status(400).send("Internal Server Error");
-//         };
-//        console.log("Chick request saved successfully"); 
-//          res.redirect('/addchickrequestform'); // Redirect to the same page or another page  
-// });
-
+function protectRoute(req, res, next) {
+  if (!req.session.userId) {
+    // User is not logged in, redirect to login page
+    return res.redirect('/loginpage');
+  }
+  next();
+}
 
 module.exports = router;
 
-
-
-
-  // .then(() => {
-        //     console.log("Chick request saved successfully");
-        //     res.redirect('/addchickrequestform'); // Redirect to the same page or another page
-        // })

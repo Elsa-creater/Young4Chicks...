@@ -60,7 +60,10 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.get("/", (req,res) => res.send("Young4Chicks Server is running successfully!"));
+app.get("/", (req,res) => res.render("home"));
+app.get('/about', (req, res) => res.render('about')); // About page
+app.get('/register', (req, res) => res.render('register')); // Registration page
+app.get('/login', (req, res) => res.render('login')); // Login page
 
 app.get("/assignedfarmers/:id", async (req, res) => {
   const userId = req.params.id;

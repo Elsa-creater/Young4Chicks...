@@ -46,6 +46,16 @@ router.post('/loginpage', async (req, res) => {
     console.error("Login error:", err);
     res.status(500).send("Server error: " + err.message);
   }
+
 });
+
+function protectRoute(req, res, next) {
+  if (!req.session.userId) {
+    // User is not logged in, redirect to login page
+    return res.redirect('/loginpage');
+  }
+  next();
+}
+// Middleware to protect routes
 
 module.exports = router;

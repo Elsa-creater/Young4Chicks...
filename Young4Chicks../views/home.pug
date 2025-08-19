@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  .container.mt-5
+    .text-center.mb-5
+      h1.display-4.text-primary Young4ChickS
+      p.lead.text-muted 
+        | An urban brooder targeting youth between 18–30. Founded by the Youth Member of Parliament to 
+        | stimulate wealth creation and money economy involvement.
+
+    //- Business Section
+    .row.mb-5
+      .col-md-12
+        h2.text-success Business
+        p
+          | Young4ChickS sells chicks on request; layers and broilers for both local and exotic chicks. 
+          | The stock is updated by the Brooder Manager whenever new stock is ready.
+        ul
+          li Each starter young farmer receives 100 chicks only.
+          li Returning farmers can take up to 500 chicks.
+          li Chicks cost UGX 1,650 each (fixed price).
+          li Each farmer is eligible for 2 bags of feeds payable after 2 months.
+
+    //- Users Section
+    .row.mb-5
+      .col-md-12
+        h2.text-success Users
+        h4 Brooder Manager
+        p
+          | Records and updates chick stock (number, type, age in days). 
+          | Approves requests from young farmers. Once approved, stock reduces automatically.
+        p Sees all young farmers who have taken their chicks.
+
+        h4.mt-4 Sales Representatives
+        p
+          | Three individuals who attend to call-in requests from farmers. 
+          | They record requests and also receive updates from the Brooder Manager.
+
+        h4.mt-4 Customers (Young Farmers)
+        p
+          | Youth between 20–30 years old in the constituency. Must be registered with a 
+          | recommender’s NIN number.
+        ul
+          li Registration captures: Name, Age, Gender, Recommender Name & NIN, Farmer’s NIN, Contact.
+          li Can request chicks once every 4 months (starter or returning).
+          li Can track approval status online until ready for pickup.
+
+    //- Call to Action
+    .text-center.mt-5
+      a.btn.btn-primary.btn-lg(href="/registration") Register Now
+      a.btn.btn-outline-success.btn-lg.ms-3(href="/loginpage") Login
